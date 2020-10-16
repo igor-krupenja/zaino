@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import DashboardIcon from '../../../images/icons/dashboard.svg';
 import LabelIcon from '../../../images/icons/label.svg';
+import { history } from '../../../routes/AppRouter';
+import { setIsLoading } from '../../../state/slices/dataLoader';
 import { LabelSortOption, sortLabelsBy } from '../../../state/slices/labelsFilters';
 import { RootState } from '../../../state/store';
 import { AccountDetails } from '../AccountDetails';
@@ -11,6 +13,8 @@ import './style.scss';
 
 export const Header = () => {
   const dispatch = useDispatch();
+  const isLoading = useSelector((state: RootState) => state.dataLoader.isLoading);
+
   const labelSortOption = useSelector((state: RootState) => state.labelsFilters.sortBy);
 
   return (
@@ -23,14 +27,21 @@ export const Header = () => {
           </Link>
         </h1>
         <nav className="header__nav">
-          <NavLink
-            to="/dashboard"
+          <div
+            // to="/dashboard"
             className="button button--underline header__nav__link"
-            activeClassName="button--underline--active"
+            // activeClassName="button--underline--active"
+            onClick={() => {
+              dispatch(setIsLoading(true));
+              console.log('set is loading');
+              setTimeout(() => history.push('/dashboard'), 10);
+              console.log('switch page');
+              // dispatch(setIsLoading(true));
+            }}
           >
             <DashboardIcon className="header__nav__link__icon" />
             <span className="header__nav__link__text">Dashboard</span>
-          </NavLink>
+          </div>
           <NavLink
             to="/labels"
             // re-sort labels by name after in-place edit and switching back to Labels page

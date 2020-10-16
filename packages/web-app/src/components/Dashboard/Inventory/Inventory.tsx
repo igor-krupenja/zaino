@@ -1,9 +1,10 @@
 import { Item } from '@zaino/shared/';
-import React from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import selectFilteredInventoryItems from '../../../state/selectors/items';
 import { selectInventoryItemsStats } from '../../../state/selectors/itemsStats';
+import { setIsLoading } from '../../../state/slices/dataLoader';
 import { RootState } from '../../../state/store';
 import { SectionHeader } from '../../Misc/SectionHeader';
 import { ColumnWrapper } from '../../Wrappers/ColumnWrapper';
@@ -24,6 +25,12 @@ export const Inventory = () => {
     shallowEqual
   );
   const stats = useSelector((state: RootState) => selectInventoryItemsStats(state), shallowEqual);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setIsLoading(false));
+    console.log('inv loaded');
+  }, []);
 
   return (
     <Stack className="stack--left">
